@@ -1,0 +1,80 @@
+create table l_customer(
+cid int primary key,
+name varchar2(30),
+mob_no varchar2(15),
+flat_no varchar2(10),
+landmark varchar2(20),
+c_date date)
+
+create table l_action(
+act_id int primary key,
+action varchar2(20),
+price float)
+
+create table l_order(
+order_id int primary key,
+cid int,
+weight number(5,2),
+no_of_shirt int,
+no_of_pants int,
+action int,
+ord_date date,
+constraint fk_ord_act foreign key(action) references l_action(act_id),
+constraint fk_ord_cid foreign key(action) references l_customer(cid))
+
+
+create table l_billing(
+bill_no int primary key,
+b_date date,
+washing_amt number(7,2),
+press_amt number(7,2),
+constraint fk_bill_ord foreign key(bill_no) references l_order(order_id))
+
+###########################################################################################################################
+
+
+@@@@@@@@@@@@@@@ l_customer @@@@@@@@@@@@@@@@@@@@@@@@@
+
+create or replace procedure l_insert_customer(id in number,nam in varchar2,mob in varchar2,flt in varchar2,lnd in varchar2,dt in date)
+as
+begin
+insert into l_customer values(id,nam,mob,flt,lnd,d);
+end;
+
+
+@@@@@@@@@@@@@@@ l_action @@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+create or replace procedure l_insert_action(id in number,nam in varchar2,wet float)
+as
+begin
+insert into l_action values(id,nam,wet);
+end;
+
+
+@@@@@@@@@@@@@@@ l_order @@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+create or replace procedure l_insert_order(id in number,id1 in number,wet in float,sh in number,pt in number,act in number,dt in date)
+as
+begin
+insert into l_order values(id,id1,wet,sh,pt,act,dt);
+end;
+
+
+@@@@@@@@@@@@@@@ l_billing @@@@@@@@@@@@@@@@@@@@@@@@@
+
+create or replace procedure l_insert_billing(id in number,dt in date,wet_amt in float,pr_amt in float)
+as
+begin
+insert into l_billing values(id,dt,wet_amt,pr_amt);
+end;
+
+
+###########################################################################################################################
+@@@@@@@@@@@@@@@@@@@@@@@@@@@ DELETING TABLES @@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+drop table l_billing
+drop table l_order
+drop table l_action
+drop table l_customer
